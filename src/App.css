@@ -1,28 +1,98 @@
+/* Add responsive layout and prettier UI */
+.App {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+@media (max-width: 800px) {
+  .App {
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px;
+  }
+}
+
+h1 {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+
+.instructions {
+  background: #e6f7ff;
+  border-left: 4px solid #1890ff;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  color: #1a202c;
+  font-size: 1rem;
+}
+
+input[type="number"] {
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  width: 80px;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+input[type="number"]:focus {
+  border: 1.5px solid #1890ff;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 1rem;
+  color: #374151;
+}
+
+/* Table improvements */
 table {
   border: 2px solid #C9C9C9;
   width: 100%;
   border-collapse: collapse;
   margin-top: 12px;
+  background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 table td,
 table th {
   border: 1px solid #C9C9C9;
-  padding: 3px 4px;
+  padding: 8px 10px;
+    text-align: center;
 }
 
 table tr:nth-child(even) {
-  background: #EBEBEB;
+  background: #f3f6fa;
 }
 
 table thead {
-  background: #FFFFFF;
-  border-bottom: 4px solid #333333;
+  background: #e6f7ff;
+    border-bottom: 4px solid #1890ff;
 }
 
 table thead th {
   font-weight: bold;
-  border-left: 2px solid #333333;
+  border-left: 2px solid #1890ff;
 }
 
 table thead th:first-child {
@@ -33,14 +103,51 @@ table tfoot {
   color: #333333;
   border-top: 4px solid #333333;
 }
-label {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+@media (max-width: 600px) {
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    display: none;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    min-height: 32px;
+  }
+
+  td:before {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #888;
+    content: attr(data-label);
+  }
 }
 
-input {
-  font-size: inherit;
-  max-width: 100px;
+.custom-food-form input[type="text"] {
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  width: 160px;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+.custom-food-form input[type="text"]:focus {
+  border: 1.5px solid #1890ff;
+  outline: none;
 }
