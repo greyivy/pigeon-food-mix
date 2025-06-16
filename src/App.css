@@ -1,153 +1,406 @@
-/* Add responsive layout and prettier UI */
+/* Accessible, muted earth tones and a highly readable serif font */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap');
+
+body,
+.App,
+h1,
+h2,
+h3,
+label,
+input,
+table,
+th,
+td,
+button {
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', Times, serif;
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+p {
+  margin-top: 0px;
+  font-size: 1.1rem;
+}
+
+body,
 .App {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 24px;
-  background: #f8fafc;
-  min-height: 100vh;
+  background: #f7f5f0;
+    color: #3d3323;
 }
 
-@media (max-width: 800px) {
-  .App {
-    flex-direction: column;
-    gap: 16px;
-    padding: 8px;
-  }
+.App {
+  padding-left: 24px;
+    padding-right: 24px;
 }
 
-h1 {
-  font-size: 1.5rem;
-  color: #2d3748;
-  margin-bottom: 12px;
+h1,
+h2 {
+  color: #4a3c24;
 }
 
 .instructions {
-  background: #e6f7ff;
-  border-left: 4px solid #1890ff;
-  padding: 12px 16px;
-  margin-bottom: 18px;
+  font-size: 0.9rem;
+    background: #f3efe7;
+    color: #3d3323;
   border-radius: 6px;
-  color: #1a202c;
-  font-size: 1rem;
+  border: 1.5px solid #e0d3b8;
+    border-left: 4px solid #b6a77a;
+    margin-bottom: 12px;
+    padding: 10px 13px !important;
 }
 
-input[type="number"] {
-  border: 1px solid #bdbdbd;
+input[type="number"],
+input[type="text"],
+.food-search {
+  border: 1.5px solid #b6a77a;
+  background: #f9f7f3;
+  color: #3d3323;
+  font-size: 1.08rem;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+.food-search:focus {
+  border: 2px solid #7c6a4d;
+  outline: 2px solid #7c6a4d;
+}
+
+button {
+  background: #a89c7d;
+  color: #222;
+  border: none;
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 8px 16px;
+    font-family: inherit;
   font-size: 1rem;
-  width: 80px;
+  cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 16px;
+  }
+  
+  button:hover,
+  button:focus {
+    background: #8b7e63;
+    outline: 2px solid #4a3c24;
+  }
+  
+  button:active {
+    background: #6d6147;
+  }
+  
+  button:disabled,
+  .stepper button:disabled {
+    background: #e0d3b8 !important;
+    color: #a7a7a7 !important;
+    cursor: not-allowed !important;
+    border: none !important;
+    opacity: 1 !important;
+  }
+  
+  .table-container {
+    max-height: 340px;
+    overflow-y: auto;
+    overflow-x: auto;
   background: #fff;
-  transition: border 0.2s;
+  border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(61, 51, 35, 0.07);
+    margin-bottom: 10px;
+    margin-top: 0 !important;
+  }
+  
+  .table-container table {
+    min-width: 540px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-container th,
+  .table-container td {
+    min-width: 110px;
+    /* Ensures columns don't get too narrow on mobile */
+  }
+  
+  .food-search {
+    margin-bottom: 6px;
+    width: 100%;
+    max-width: 340px;
+    padding: 5px 10px;
+    border: 1.5px solid #b6a77a;
+    border-radius: 4px;
+    font-size: 1.08rem;
+    background: #f9f7f3;
+    color: #3d3323;
+  }
+  
+  .add-row input[type="text"],
+  .add-row input[type="number"] {
+    border: 1.5px solid #b6a77a;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 1.08rem;
+    width: 100%;
+    background: #f9f7f3;
+    color: #3d3323;
+      transition: border 0.2s;
+      }
+        .add-row input[type="text"]:focus,
+        .add-row input[type="number"]:focus {
+          border: 2px solid #7c6a4d;
+          outline: 2px solid #7c6a4d;
+        }
+    
+        .add-row button {
+          background: #b6a77a;
+          color: #222;
+          border: none;
+          border-radius: 4px;
+          padding: 6px 14px;
+          cursor: pointer;
+          font-size: 1rem;
 }
 
-input[type="number"]:focus {
-  border: 1.5px solid #1890ff;
-  outline: none;
+.add-row button:disabled {
+  background: #e0d3b8;
+  color: #888;
+  cursor: not-allowed;
 }
 
-input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+.result-empty {
+  color: #7c6a4d;
+  font-size: 1.1em;
+  text-align: center;
+  margin: 32px 0;
 }
 
-label {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 1rem;
-  color: #374151;
-}
-
-/* Table improvements */
+/* Table improvements with muted earth tones */
 table {
-  border: 2px solid #C9C9C9;
+  border: 2px solid #b6a77a;
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
+  /* margin-top: 12px; */
   background: #fff;
-    border-radius: 8px;
+  border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(61, 51, 35, 0.07);
 }
 
 table td,
 table th {
-  border: 1px solid #C9C9C9;
+  border: 1px solid #e0d3b8;
   padding: 8px 10px;
-    text-align: center;
+  text-align: center;
+  color: #3d3323;
+    font-size: 1.08rem;
 }
 
 table tr:nth-child(even) {
-  background: #f3f6fa;
+  background: #f3efe7;
 }
 
 table thead {
-  background: #e6f7ff;
-    border-bottom: 4px solid #1890ff;
+  background: #e0d3b8;
+    border-bottom: 4px solid #b6a77a;
 }
 
 table thead th {
-  font-weight: bold;
-  border-left: 2px solid #1890ff;
+  font-weight: 600;
+    border-left: 2px solid #b6a77a;
 }
 
 table thead th:first-child {
   border-left: none;
 }
-table tfoot {
-  font-weight: bold;
-  color: #333333;
-  border-top: 4px solid #333333;
+@media (max-width: 900px) {
+  .App {
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 8px !important;
+  }
+
+  .row-flex {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .row-flex>div {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-bottom: 18px;
+  }
+
+  .table-container {
+    max-height: 220px;
+  }
+}
+
+@media (max-width: 700px) {
+  .food-search {
+    max-width: 98vw;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .table-container {
+    max-height: 320px;
+    overflow-x: auto;
+  }
+
+  .table-container table {
+    min-width: 540px;
+  }
+
+  .table-container th,
+  .table-container td {
+    min-width: 110px;
+  }
 }
 @media (max-width: 600px) {
+      .App {
+          padding: 2px !important;
+        }
+      
+        .App h1 {
+          font-size: 1.1rem;
+        }
+      
+        .instructions {
+          padding: 8px 6px;
+        }
+      
+        .table-container {
+          max-height: 320px;
+        }
+      
+        .food-search {
+          font-size: 0.98rem;
+          max-width: 100%;
+        }
+      
+        table td,
+        table th {
+          font-size: 0.98rem;
+          padding: 6px 4px;
+        }
+      
+        .add-row input[type="text"],
+        .add-row input[type="number"] {
+          font-size: 0.98rem;
+          padding: 3px 4px;
+        }
+      
+        button,
+        .add-row button {
+          font-size: 0.98rem;
+          padding: 6px 8px;
+        }
+      }
+      
+      /* Accessibility: high contrast focus for all interactive elements */
+      input:focus,
+      button:focus,
+      select:focus {
+        outline: 2.5px solid #4a3c24 !important;
+        outline-offset: 1px;
+      }
+      
+            input[readonly][type="number"]::-webkit-inner-spin-button,
+            input[readonly][type="number"]::-webkit-outer-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+      
+            input[readonly][type="number"] {
+              -moz-appearance: textfield;
+              appearance: textfield;
+            }
+      
+            section.pigeon-step {
+              max-width: 1300px;
+              margin: 0 auto 22px auto;
+              background: #f9f7f3;
+              border-radius: 12px;
+              box-shadow: 0 2px 10px rgba(61, 51, 35, 0.08);
+              padding: 18px 18px 14px 18px;
+              /* less padding, wider */
+              border: 1.5px solid #e0d3b8;
+            }
+            .pigeon-bubble {
+              font-size: 0.9rem;
+              border-radius: 6px;
+              padding: 8px 12px;
+              margin-bottom: 8px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              border: 1.5px solid transparent;
+            }
+            .pigeon-warning {
+              background: #fff3cd;
+              color: #856404;
+              border-color: #ffeeba;
+            }
+      
+            .pigeon-error {
+              background: #fdeaea;
+              color: #a94442;
+              border-color: #f5c6cb;
+            }
+      
+            .pigeon-success {
+              background: #e6f9e6;
+              color: #256029;
+              border-color: #b7e4b7;
+            }
+      
+            .pigeon-header {
+              text-align: center;
+              margin-bottom: 0;
+              margin-top: 8px;
+            }
+      
+            .pigeon-emoji {
+              font-size: 2.5rem;
+              vertical-align: middle;
+              margin-right: 8px;
+            }
 
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
-
-  thead tr {
-    display: none;
-  }
-
-  td {
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
-    min-height: 32px;
-  }
-
-  td:before {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    width: 45%;
-    white-space: nowrap;
-    font-weight: bold;
-    color: #888;
-    content: attr(data-label);
-  }
+.pigeon-title {
+  display: inline;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  vertical-align: middle;
+  color: #4a3c24;
 }
 
-.custom-food-form input[type="text"] {
-  border: 1px solid #bdbdbd;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 1rem;
-  width: 160px;
-  background: #fff;
-  transition: border 0.2s;
+.pigeon-subtitle {
+  font-size: 1.1rem;
+  color: #7c6a4d;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+.nutrition-table {
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin-left: 0;
+  table-layout: fixed;
 }
 
-.custom-food-form input[type="text"]:focus {
-  border: 1.5px solid #1890ff;
-  outline: none;
+.nutrition-input {
+  width: 100%;
+  max-width: 120px;
+  box-sizing: border-box;
+}
+
+.nutrition-comparison-header {
+  font-weight: 600;
+  font-size: 1.13rem;
+  margin-bottom: 6px;
+  color: #4a3c24;
 }
