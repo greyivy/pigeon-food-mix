@@ -427,7 +427,7 @@ function App() {
             </tbody>
           </table>
         </div>
-        <button onClick={handleReset} className="start-over-btn">Start Over</button>
+        <button onClick={handleReset} className="button-delete">Start Over</button>
       </section>
     </main >
   );
