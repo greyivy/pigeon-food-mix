@@ -261,7 +261,7 @@ function App() {
           <table>
             <thead>
               <tr>
-                <th>Include</th>
+                <th style={{ minWidth: 36, width: 48, padding: 0 }}></th>
                 <th>Food</th>
                 <th>Protein</th>
                 <th>Fat</th>
@@ -272,7 +272,7 @@ function App() {
             <tbody>
               {filteredFoods.map((food) => (
                 <tr key={food.name}>
-                  <td data-label="Include">
+                  <td style={{ minWidth: 36, width: 48, padding: 0 }} data-label="Include">
                     <input
                       type="checkbox"
                       checked={!!enabledFoods[food.name]}
@@ -293,7 +293,7 @@ function App() {
                 </tr>
               ))}
               <tr className="add-row">
-                <td></td>
+                <td style={{ minWidth: 36, width: 48, padding: 0 }}></td>
                 <td>
                   <input
                     type="text"
@@ -310,7 +310,7 @@ function App() {
                 <td>
                   <input
                     type="number"
-                    placeholder="Protein"
+                    placeholder="Protein %"
                     value={addRow.protein}
                     onChange={e => setAddRow({ ...addRow, protein: e.target.value })}
                     min={0}
@@ -323,7 +323,7 @@ function App() {
                 <td>
                   <input
                     type="number"
-                    placeholder="Fat"
+                    placeholder="Fat %"
                     value={addRow.fat}
                     onChange={e => setAddRow({ ...addRow, fat: e.target.value })}
                     min={0}
@@ -336,7 +336,7 @@ function App() {
                 <td>
                   <input
                     type="number"
-                    placeholder="Fiber"
+                    placeholder="Fiber %"
                     value={addRow.fiber}
                     onChange={e => setAddRow({ ...addRow, fiber: e.target.value })}
                     min={0}
