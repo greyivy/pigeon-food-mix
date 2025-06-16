@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/pigeon-food-mix/static/css/main.ce100c38.css",
-    "main.js": "/pigeon-food-mix/static/js/main.7b381edb.js",
+    "main.css": "/pigeon-food-mix/static/css/main.8f66f06a.css",
+    "main.js": "/pigeon-food-mix/static/js/main.11469455.js",
     "static/js/453.1965c8d6.chunk.js": "/pigeon-food-mix/static/js/453.1965c8d6.chunk.js",
     "index.html": "/pigeon-food-mix/index.html",
-    "main.ce100c38.css.map": "/pigeon-food-mix/static/css/main.ce100c38.css.map",
-    "main.7b381edb.js.map": "/pigeon-food-mix/static/js/main.7b381edb.js.map",
+    "main.8f66f06a.css.map": "/pigeon-food-mix/static/css/main.8f66f06a.css.map",
+    "main.11469455.js.map": "/pigeon-food-mix/static/js/main.11469455.js.map",
     "453.1965c8d6.chunk.js.map": "/pigeon-food-mix/static/js/453.1965c8d6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce100c38.css",
-    "static/js/main.7b381edb.js"
+    "static/css/main.8f66f06a.css",
+    "static/js/main.11469455.js"
   ]
 }
