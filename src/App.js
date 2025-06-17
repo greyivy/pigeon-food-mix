@@ -4,7 +4,7 @@ import foods from './foods.js';
 import { calculateIdealMix } from './calculate.js';
 
 // Ideal nutritional percentages
-const IDEAL = { protein: 18, fat: 12, fiber: 8 };
+const IDEAL = { protein: 14, fat: 3.75, fiber: 4.25 };
 const STORAGE_KEY = 'pigeon-food-app-state-v1';
 
 function TableCell({ value, isBold, isHeader, ariaLabel }) {
@@ -159,9 +159,20 @@ function App() {
         </p>
         <div className="instructions">
           <span role="img" aria-label="info">ℹ️</span> <b>Notes on ideal percentages:</b><br />
-          <b>Protein:</b> 16–19% is typical for most pigeons. Too low can cause poor growth; too high can stress kidneys.<br />
-          <b>Fat:</b> 10–14% is a good range. Too much can cause obesity; too little can reduce energy.<br />
-          <b>Fiber:</b> 6–10% is usually fine. Fiber is more flexible, but very high or low values can affect digestion.
+          <b>Protein:</b> 13–15% is typical for most pigeons. Too low can cause poor growth; too high can stress kidneys.<br />
+          <b>Fat:</b> 2.5–5% is a good range. Too much can cause obesity; too little can reduce energy.<br />
+          <b>Fiber:</b> 2.5–6% is usually fine. Fiber is more flexible, but very high or low values can affect digestion.
+
+          {/* <details style={{ marginTop: 12, marginBottom: 4 }}>
+            <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>More on nutrition recommendations</summary>
+            <div style={{ marginTop: 8 }}>
+              <b>Protein:</b> Some breeders use up to 18% protein for actively breeding hens, based on a <a target="_blank" rel="noopener noreferrer" href="https://www.researchgate.net/publication/248626757_Nutrition_of_the_domestic_pigeon_Columba_livia_domestica">study from the Laboratory of Animal Nutrition in Belgium</a>. This study found 18% optimal for parents rearing squabs, and other research suggests 12–18% is the general range. However, unless your pigeon is a rearing hen, 18% is likely too high—excess protein can stress internal organs.<br /><br />
+              <b>Fat:</b> There’s less research on optimal fat, but the same study notes that crop milk for squabs in their first week contains 9–13% fat, which is the highest fat intake of their lives. Most commercial pigeon feeds (“all rounders” like <a target="_blank" rel="noopener noreferrer" href="https://www.chewy.com/versele-laga-classic-pigeon-food/dp/259128">VL Classic</a>, <a target="_blank" rel="noopener noreferrer" href="https://dmfnaturecenter.com/product/breeder-pigeon-mix-15/">Des Moines</a>, <a target="_blank" rel="noopener noreferrer" href="https://www.aejames.com/products/pigeon-feeds/all-round/countrywide-all-rounder/">Country Wide</a>) have 2.5–5% crude fat.<br /><br />
+              <b>Fiber:</b> There aren’t many studies focused on fiber, but commercial mixes usually fall between 2.5–6%. Fiber is more forgiving, so a bit above or below is generally fine.<br /><br />
+              <b>Special cases:</b> You might want higher fat for outdoor birds in harsh winters or for rehabilitating emaciated rescues. For indoor or mild-climate birds with plenty of food, the above ranges are a good baseline.<br /><br />
+              <a href="https://www.pigeon.guide/diet" target="_blank" rel="noopener noreferrer"><b>More info on pigeon diet from pigeon.guide</b></a>
+            </div>
+          </details> */}
         </div>
         <table className="nutrition-table">
           <thead>
@@ -384,7 +395,7 @@ function App() {
                 {Object.entries(result.foods).map(([food, amount]) => (
                   <tr key={food}>
                     <td data-label="Food">{food}</td>
-                    <td data-label="Amount">{amount} part(s)</td>
+                    <td data-label="Amount">{amount} part{amount !== 1 && 's'}</td>
                   </tr>
                 ))}
               </tbody>
