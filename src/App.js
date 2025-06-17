@@ -163,7 +163,7 @@ function App() {
           <b>Fat:</b> 2.5–5% is a good range. Too much can cause obesity; too little can reduce energy.<br />
           <b>Fiber:</b> 2.5–6% is usually fine. Fiber is more flexible, but very high or low values can affect digestion.
 
-          {/* <details style={{ marginTop: 12, marginBottom: 4 }}>
+          <details style={{ marginTop: 12, marginBottom: 4 }}>
             <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>More on nutrition recommendations</summary>
             <div style={{ marginTop: 8 }}>
               <b>Protein:</b> Some breeders use up to 18% protein for actively breeding hens, based on a <a target="_blank" rel="noopener noreferrer" href="https://www.researchgate.net/publication/248626757_Nutrition_of_the_domestic_pigeon_Columba_livia_domestica">study from the Laboratory of Animal Nutrition in Belgium</a>. This study found 18% optimal for parents rearing squabs, and other research suggests 12–18% is the general range. However, unless your pigeon is a rearing hen, 18% is likely too high—excess protein can stress internal organs.<br /><br />
@@ -172,7 +172,7 @@ function App() {
               <b>Special cases:</b> You might want higher fat for outdoor birds in harsh winters or for rehabilitating emaciated rescues. For indoor or mild-climate birds with plenty of food, the above ranges are a good baseline.<br /><br />
               <a href="https://www.pigeon.guide/diet" target="_blank" rel="noopener noreferrer"><b>More info on pigeon diet from pigeon.guide</b></a>
             </div>
-          </details> */}
+          </details>
         </div>
         <table className="nutrition-table">
           <thead>
