@@ -7,6 +7,13 @@ import { calculateIdealMix } from './calculate.js';
 const IDEAL = { protein: 14, fat: 3.75, fiber: 4.25 };
 const STORAGE_KEY = 'pigeon-food-app-state-v1';
 
+// Thresholds for coloring and notifications
+const thresholds = {
+  protein: { ideal: 3, red: 8 },
+  fat: { ideal: 3, red: 8 },
+  fiber: { ideal: 6, red: 12 }
+};
+
 function TableCell({ value, isBold, isHeader, ariaLabel }) {
   if (isHeader) return <th scope="col">{value}</th>;
   return <td aria-label={ariaLabel} style={isBold ? { fontWeight: 'bold' } : {}}>{value}</td>;
@@ -38,6 +45,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [addRow, setAddRow] = useState({ name: '', protein: '', fat: '', fiber: '' });
   const [addRowError, setAddRowError] = useState('');
+  const [manualAmounts, setManualAmounts] = useState(initial?.manualAmounts ?? {});
   const allFoods = [...foods, ...customFoods];
 
   // Filter foods by search
@@ -48,18 +56,42 @@ function App() {
   // Ideal mix result
   const [result, setResult] = useState({ foods: [], nutrition: { protein: 0, fat: 0, fiber: 0 } });
 
-  // Calculate ideal mix result
+  // Calculate ideal mix result or recalculate nutrition if manual amounts are set
   useEffect(() => {
     async function fetchResult() {
-      const calculatedResult = await calculateIdealMix(
+      let calculatedResult = await calculateIdealMix(
         { protein, fat, fiber },
         allFoods.filter((food) => enabledFoods[food.name]),
         8 // hardcoded max parts
       );
+      // If manual amounts are set, recalculate nutrition
+      if (manualAmounts && Object.keys(manualAmounts).length > 0) {
+        const foodsList = allFoods.filter((food) => enabledFoods[food.name]);
+        const totalParts = foodsList.reduce((sum, food) => sum + (manualAmounts[food.name] ?? calculatedResult.foods[food.name] ?? 0), 0);
+        const nutrition = { protein: 0, fat: 0, fiber: 0 };
+        foodsList.forEach(food => {
+          const amt = manualAmounts[food.name] ?? calculatedResult.foods[food.name] ?? 0;
+          nutrition.protein += food.protein * amt;
+          nutrition.fat += food.fat * amt;
+          nutrition.fiber += food.fiber * amt;
+        });
+        nutrition.protein /= totalParts || 1;
+        nutrition.fat /= totalParts || 1;
+        nutrition.fiber /= totalParts || 1;
+        // Use manual amounts for foods
+        calculatedResult = {
+          foods: foodsList.reduce((obj, food) => {
+            const amt = manualAmounts[food.name] ?? calculatedResult.foods[food.name] ?? 0;
+            if (amt > 0) obj[food.name] = amt;
+            return obj;
+          }, {}),
+          nutrition
+        };
+      }
       setResult(calculatedResult);
     }
     fetchResult();
-  }, [protein, fat, fiber, enabledFoods, customFoods]);
+  }, [protein, fat, fiber, enabledFoods, customFoods, manualAmounts]);
 
   // Update enabledFoods when customFoods change
   useEffect(() => {
@@ -73,6 +105,11 @@ function App() {
     // eslint-disable-next-line
   }, [customFoods]);
 
+  // Reset manual amounts when settings change
+  useEffect(() => {
+    setManualAmounts({});
+  }, [protein, fat, fiber, enabledFoods, customFoods]);
+
   // Persist to localStorage on any relevant state change
   useEffect(() => {
     localStorage.setItem(
@@ -82,10 +119,11 @@ function App() {
         fat,
         fiber,
         customFoods,
-        enabledFoods
+        enabledFoods,
+        manualAmounts
       })
     );
-  }, [protein, fat, fiber, customFoods, enabledFoods]);
+  }, [protein, fat, fiber, customFoods, enabledFoods, manualAmounts]);
 
   // Set document title
   useEffect(() => {
@@ -139,6 +177,7 @@ function App() {
       acc[food.name] = false;
       return acc;
     }, {}));
+    setManualAmounts({});
     localStorage.removeItem(STORAGE_KEY);
   };
 
@@ -211,12 +250,6 @@ function App() {
         </p>
         {/* Nutrient difference notifications */}
         {(() => {
-          // Thresholds: protein/fat: 3% (ideal), 8% (red); fiber: 6% (ideal), 12% (red)
-          const thresholds = {
-            protein: { ideal: 3, red: 8 },
-            fat: { ideal: 3, red: 8 },
-            fiber: { ideal: 6, red: 12 }
-          };
           const diffs = [
             { label: 'Protein', key: 'protein', diff: Math.abs(result.nutrition.protein - protein), value: result.nutrition.protein, target: protein },
             { label: 'Fat', key: 'fat', diff: Math.abs(result.nutrition.fat - fat), value: result.nutrition.fat, target: fat },
@@ -395,7 +428,21 @@ function App() {
                 {Object.entries(result.foods).map(([food, amount]) => (
                   <tr key={food}>
                     <td data-label="Food">{food}</td>
-                    <td data-label="Amount">{amount} part{amount !== 1 && 's'}</td>
+                    <td data-label="Amount">
+                      <input
+                        type="number"
+                        min={0.05}
+                        step={0.05}
+                        value={manualAmounts[food] ?? amount}
+                        onChange={e => {
+                          let val = Number(e.target.value);
+                          if (isNaN(val) || val < 0.1) val = 0.1;
+                          setManualAmounts(prev => ({ ...prev, [food]: val }));
+                        }}
+                        style={{ width: 60 }}
+                        aria-label={`Amount for ${food}`}
+                      /> part{(manualAmounts[food] ?? amount) !== 1 && 's'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -417,24 +464,25 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Protein</td>
-                <td>{protein}%</td>
-                <td style={{ fontWeight: 'bold' }}>{!isNaN(result.nutrition.protein) ? result.nutrition.protein.toFixed(1) + '%' : ''}</td>
-                <td>{isNaN(result.nutrition.protein - protein) || result.nutrition.protein === undefined ? '' : (Math.abs(result.nutrition.protein - protein) < 0.05 ? '0.0%' : (result.nutrition.protein - protein).toFixed(1) + '%')}</td>
-              </tr>
-              <tr>
-                <td>Fat</td>
-                <td>{fat}%</td>
-                <td style={{ fontWeight: 'bold' }}>{!isNaN(result.nutrition.fat) ? result.nutrition.fat.toFixed(1) + '%' : ''}</td>
-                <td>{isNaN(result.nutrition.fat - fat) || result.nutrition.fat === undefined ? '' : (Math.abs(result.nutrition.fat - fat) < 0.05 ? '0.0%' : (result.nutrition.fat - fat).toFixed(1) + '%')}</td>
-              </tr>
-              <tr>
-                <td>Fiber</td>
-                <td>{fiber}%</td>
-                <td style={{ fontWeight: 'bold' }}>{!isNaN(result.nutrition.fiber) ? result.nutrition.fiber.toFixed(1) + '%' : ''}</td>
-                <td>{isNaN(result.nutrition.fiber - fiber) || result.nutrition.fiber === undefined ? '' : (Math.abs(result.nutrition.fiber - fiber) < 0.05 ? '0.0%' : (result.nutrition.fiber - fiber).toFixed(1) + '%')}</td>
-              </tr>
+              {['protein', 'fat', 'fiber'].map((nutrient) => {
+                const diff = result.nutrition[nutrient] - (nutrient === 'protein' ? protein : nutrient === 'fat' ? fat : fiber);
+                const absDiff = Math.abs(diff);
+                let diffStyle = {};
+                if (!isNaN(absDiff)) {
+                  if (absDiff > thresholds[nutrient].red) diffStyle = { color: '#c00', fontWeight: 'bold' };
+                  else if (absDiff > thresholds[nutrient].ideal) diffStyle = { color: '#e6a700', fontWeight: 'bold' };
+                }
+                return (
+                  <tr key={nutrient}>
+                    <td style={{ textTransform: 'capitalize' }}>{nutrient}</td>
+                    <td>{nutrient === 'protein' ? protein : nutrient === 'fat' ? fat : fiber}%</td>
+                    <td style={{ fontWeight: 'bold' }}>{!isNaN(result.nutrition[nutrient]) ? result.nutrition[nutrient].toFixed(1) + '%' : ''}</td>
+                    <td style={diffStyle}>
+                      {isNaN(diff) || result.nutrition[nutrient] === undefined ? '' : (absDiff < 0.05 ? '0.0%' : diff.toFixed(1) + '%')}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
